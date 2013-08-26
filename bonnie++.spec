@@ -1,7 +1,7 @@
 Name:		bonnie++
 Version:	1.03e
 Release:	1%{?dist}
-Summary:	benchmark suite
+Summary:	Benchmark suite
 
 Group:		Development/Tools
 License:	GPLv2
