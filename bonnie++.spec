@@ -33,4 +33,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/bon_csv2txt
 %{_sbindir}/bonnie++
 %{_sbindir}/zcav
-%doc %{_mandir}/*
+%doc %{_mandir}/man1/*
+%doc %{_mandir}/man8/*
