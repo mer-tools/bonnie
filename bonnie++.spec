@@ -7,12 +7,14 @@ Group:		System/Software
 License:	GPLv2
 URL:		http://www.coker.com.au/bonnie++/
 Source0:	%{name}-%{version}.tgz
+Patch0: 	0001-Add-support-for-DESTDIR-to-Makefile.patch
 
 %description
 %{summary}.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 autoreconf -v -f -i
