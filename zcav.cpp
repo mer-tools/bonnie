@@ -5,9 +5,6 @@ using namespace std;
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <time.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include <cstdlib>
 #include <cstring>
 #include "bonnie.h"

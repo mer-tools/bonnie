@@ -1,10 +1,13 @@
 #ifndef BONNIE
 #define BONNIE
 
-#define BON_VERSION "1.03e"
+#define BON_VERSION "1.04"
 
 #include "conf.h"
 #include "port.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #define SemKey 4711
 #define NumSems TestCount
@@ -13,7 +16,7 @@
 #define MaxNameLen (7 + RandExtraLen)
 // data includes index to which directory (6 bytes) and terminating '\0' for
 // the name and pointer to file name
-#define MaxDataPerFile (MaxNameLen + 6 + 1 + 4)
+#define MaxDataPerFile (MaxNameLen + 6 + 1 + sizeof(void *))
 #define MinTime (0.5)
 #define Seeks (8192)
 #define UpdateSeek (10)
@@ -30,8 +33,8 @@
 #define DefaultDirectoryMinSize 0
 // 1024M per file for IO.
 #define IOFileSize 1024
-// 3 digits
-#define MaxIOFiles 1000
+// 4 digits
+#define MaxIOFiles 10000
 
 typedef const char * PCCHAR;
 typedef char * PCHAR;

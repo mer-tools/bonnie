@@ -1,1 +1,1 @@
-changelog
+debian/changelog

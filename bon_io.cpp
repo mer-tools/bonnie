@@ -1,5 +1,3 @@
-#include <fcntl.h>
-#include <sys/types.h>
 #ifdef OS2
 #define INCL_DOSPROCESS
 #define INCL_DOSFILEMGR
@@ -10,7 +8,6 @@
 #include <sys/wait.h>
 #endif
 #include <stdlib.h>
-#include <sys/stat.h>
 #include <string.h>
 
 #include "bonnie.h"
@@ -306,19 +303,25 @@ int CFileOp::write_block_putc()
 
 int CFileOp::open(CPCCHAR base_name, bool create, bool use_fopen)
 {
-  m_name = new char[strlen(base_name) + 8];
+  m_name = new char[strlen(base_name) + 9];
   strcpy(m_name, base_name);
   return reopen(create, use_fopen);
 }
 
-CFileOp::CFileOp(BonTimer &timer, int file_size, int chunk_bits, bool use_sync, bool use_direct_io)
+CFileOp::CFileOp(BonTimer &timer, int file_size, int chunk_bits, bool use_sync
+#ifdef O_DIRECT
+               , bool use_direct_io
+#endif
+                )
  : m_timer(timer)
  , m_stream(NULL)
  , m_fd(NULL)
  , m_isopen(false)
  , m_name(NULL)
  , m_sync(use_sync)
+#ifdef O_DIRECT
  , m_use_direct_io(use_direct_io)
+#endif
  , m_chunk_bits(chunk_bits)
  , m_chunk_size(1 << m_chunk_bits)
  , m_chunks_per_file(Unit / m_chunk_size * IOFileSize)
@@ -367,7 +370,7 @@ int CFileOp::reopen(bool create, bool use_fopen)
   int len = strlen(m_name);
   for(i = 0; i < m_num_files; i++)
   {
-    sprintf(&m_name[len], ".%03d", i);
+    sprintf(&m_name[len], ".%04d", i);
     if(m_open(m_name, i, create))
       return 1;
   }
@@ -393,10 +396,12 @@ int CFileOp::m_open(CPCCHAR base_name, int ind, bool create)
     createFlag = OPEN_ACTION_CREATE_IF_NEW | OPEN_ACTION_REPLACE_IF_EXISTS;
 #else
     flags = O_RDWR | O_CREAT | O_EXCL;
+#ifdef O_DIRECT
     if(m_use_direct_io)
     {
       flags |= O_DIRECT;
     }
+#endif
 #endif
   }
   else

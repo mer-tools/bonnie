@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_INIT(bonnie++.cpp)
 AC_CONFIG_HEADER(conf.h)
 AC_SUBST(version)
-version="1.03e"
+version="1.04"
 
 AC_SUBST(stripping)
 AC_ARG_ENABLE(stripping,
@@ -65,9 +65,9 @@ fi
 
 AC_SUBST(exes)
 AC_SUBST(man8)
-AC_CHECK_HEADERS(vector.h vector, vec_exes="zcav" vec_man8="zcav.8", echo "STL not installed so no ZCAV!")
-exes="bonnie++ $vec_exes"
-man8="bonnie++.8 $vec_man8"
+AC_CHECK_HEADERS(vector.h vector)
+exes="bonnie++ zcav"
+man8="bonnie++.8 zcav.8"
 AC_CHECK_HEADERS(algorithm algo.h algo)
 
 AC_SUBST(aix_mem_size)

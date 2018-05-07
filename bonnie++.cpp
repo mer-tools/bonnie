@@ -56,7 +56,9 @@ public:
   bool quiet;
   bool fast;
   bool sync_bonnie;
+#ifdef O_DIRECT
   bool use_direct_io;
+#endif
   BonTimer timer;
   int ram;
   Semaphore sem;
@@ -119,7 +121,9 @@ CGlobalItems::CGlobalItems(bool *exitFlag)
  : quiet(false)
  , fast(false)
  , sync_bonnie(false)
+#ifdef O_DIRECT
  , use_direct_io(false)
+#endif
  , timer()
  , ram(0)
  , sem(SemKey, TestCount)
@@ -235,7 +239,11 @@ int main(int argc, char *argv[])
 #endif
 
   int int_c;
-  while(-1 != (int_c = getopt(argc, argv, "bd:fg:m:n:p:qr:s:u:x:yD")) )
+  while(-1 != (int_c = getopt(argc, argv, "bd:fg:m:n:p:qr:s:u:x:y"
+#ifdef O_DIRECT
+                             "D"
+#endif
+                             )) )
   {
     switch(char(int_c))
     {
@@ -325,10 +333,12 @@ int main(int argc, char *argv[])
                            defined semaphore */
         globals.sync_bonnie = true;
       break;
+#ifdef O_DIRECT
       case 'D':
                         /* open file descriptor with direct I/O */
         globals.use_direct_io = true;
       break;
+#endif
     }
   }
   if(optind < argc)
@@ -386,6 +396,11 @@ int main(int argc, char *argv[])
 
   if(file_size < 0 || directory_size < 0 || (!file_size && !directory_size) )
     usage();
+  if(directory_size > 262143)
+  {
+    fprintf(stderr, "Maximum directory size is 976\n");
+    return 1;
+  }
   if(globals.chunk_size() < 256 || globals.chunk_size() > Unit)
     usage();
   int i;
@@ -454,7 +469,11 @@ TestFileOps(int file_size, CGlobalItems &globals)
 {
   if(file_size)
   {
-    CFileOp file(globals.timer, file_size, globals.chunk_bits, globals.bufSync, globals.use_direct_io);
+    CFileOp file(globals.timer, file_size, globals.chunk_bits, globals.bufSync
+#ifdef O_DIRECT
+               , globals.use_direct_io
+#endif
+                );
     int    num_chunks;
     int    words;
     char  *buf = globals.buf();
@@ -691,7 +710,10 @@ usage()
     "                [-m machine-name]\n"
     "                [-r ram-size-in-MiB]\n"
     "                [-x number-of-tests] [-u uid-to-use:gid-to-use] [-g gid-to-use]\n"
-    "                [-q] [-f] [-b] [-D] [-p processes | -y]\n"
+    "                [-q] [-f] [-b] [-p processes | -y]\n"
+#ifdef O_DIRECT
+    "                [-D]\n"
+#endif
     "\nVersion: " BON_VERSION "\n");
   exit(1);
 }

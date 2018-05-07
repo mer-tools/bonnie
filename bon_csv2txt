@@ -19,7 +19,7 @@
 
 sub IOHeader
 {
-  my $version = '1.03e';
+  my $version = '1.04';
 print "Version  $version      ------Sequential Output------ --Sequential Input- --Random-\n";
 print "                    -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --Seeks--\n";
 print "Machine        Size K/sec %CP K/sec %CP K/sec %CP K/sec %CP K/sec %CP  /sec %CP\n";

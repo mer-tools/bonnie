@@ -1,3 +1,21 @@
+bonnie++ (1.04) UNRELEASED; urgency=medium
+
+  * Allow 10000 files for IO tests (used to be 1000).
+  * Use debhelper compat level 11.
+
+ -- Russell Coker <russell@coker.com.au>  Tue, 05 Sep 2017 14:27:02 +1000
+
+bonnie++ (1.03f) unstable; urgency=low
+
+  * Fix a minor bug in setting the GID.
+  * Make it build on Solaris by checking for O_DIRECT being defined.
+  * The option -n9765 or greater caused the small file test to abort,
+    to increase this while maintaining result compatability (same file length)
+    I changed the format to hexadecimal, the limit is now 262,143.  I also
+    made it handle errors better.  Thanks Nick Dokos of HP.
+
+ -- Russell Coker <russell@coker.com.au>  Fri, 03 Jul 2009 11:58:38 +1000
+
 bonnie++ (1.03e) unstable; urgency=low
 
   * Added the -D option to bonnie++ to use direct IO (O_DIRECT) for bulk IO.

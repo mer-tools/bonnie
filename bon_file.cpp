@@ -1,5 +1,3 @@
-#include <fcntl.h>
-#include <sys/types.h>
 #ifdef OS2
 #define INCL_DOSFILEMGR
 #include <os2.h>
@@ -9,7 +7,6 @@
 #endif
 #include <string.h>
 #include <stdlib.h>
-#include <sys/stat.h>
 
 #include "bon_file.h"
 #include "bon_time.h"
@@ -142,11 +139,11 @@ void COpenTest::make_names(bool do_random)
     }
     if(do_random)
     {
-      sprintf(buf, "%s%07d", rand_buf, i);
+      sprintf(buf, "%s%07x", rand_buf, i);
     }
     else
     {
-      sprintf(buf, "%07d%s", i, rand_buf);
+      sprintf(buf, "%07x%s", i, rand_buf);
     }
     buf += strlen(buf) + 1;
   }
@@ -162,7 +159,7 @@ int COpenTest::create_a_file(const char *filename, char *buf, int size, int dir)
                    , OPEN_FLAGS_SEQUENTIAL | OPEN_SHARE_DENYNONE | OPEN_ACCESS_READWRITE
                    , NULL);
 #else
-  fd = creat(filename, S_IRUSR | S_IWUSR);
+  fd = open(filename, O_CREAT|O_EXCL|O_WRONLY, S_IRUSR | S_IWUSR);
 #endif
   if(fd == -1)
   {
