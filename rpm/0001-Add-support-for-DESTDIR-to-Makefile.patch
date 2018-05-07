@@ -1,0 +1,46 @@
+From fb8f1c27841707d63d194d1d3e52764bda2fa343 Mon Sep 17 00:00:00 2001
+From: Matti Kosola <matti.kosola@jollamobile.com>
+Date: Mon, 26 Aug 2013 10:41:12 +0000
+Subject: [PATCH] Add-support-for-DESTDIR-to-Makefile
+
+---
+ Makefile.in | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 4a174db..47a7106 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -4,6 +4,8 @@ all: $(EXES)
+ 
+ SCRIPTS=bon_csv2html bon_csv2txt
+ 
++DESTDIR:=
++
+ prefix=@prefix@
+ eprefix=@exec_prefix@
+ #MORE_WARNINGS=-Weffc++ -Wcast-align
+@@ -33,14 +35,14 @@ zcav: zcav.cpp $(ZCAVOBJS)
+ 	$(CXX) zcav.cpp -o zcav $(ZCAVOBJS) $(LFLAGS)
+ 
+ install-bin: $(EXES)
+-	mkdir -p $(eprefix)/bin $(eprefix)/sbin
+-	@INSTALL_PROGRAM@ @stripping@ $(EXES) $(eprefix)/sbin
+-	@INSTALL_SCRIPT@ $(SCRIPTS) $(eprefix)/bin
++	mkdir -p $(DESTDIR)$(eprefix)/bin $(DESTDIR)$(eprefix)/sbin
++	@INSTALL_PROGRAM@ @stripping@ $(EXES) $(DESTDIR)$(eprefix)/sbin
++	@INSTALL_SCRIPT@ $(SCRIPTS) $(DESTDIR)$(eprefix)/bin
+ 
+ install: install-bin
+-	mkdir -p @mandir@/man1 @mandir@/man8
+-	@INSTALL_DATA@ $(MAN1) @mandir@/man1
+-	@INSTALL_DATA@ $(MAN8) @mandir@/man8
++	mkdir -p $(DESTDIR)@mandir@/man1 $(DESTDIR)@mandir@/man8
++	@INSTALL_DATA@ $(MAN1) $(DESTDIR)@mandir@/man1
++	@INSTALL_DATA@ $(MAN8) $(DESTDIR)@mandir@/man8
+ 
+ %.o: %.cpp %.h bonnie.h port.h
+ 	$(CXX) -c $<
+-- 
+1.9.1
+

@@ -1,0 +1,5 @@
+* Mon Aug 26 2013 Matti Kosola <matti.kosola@jollamobile.com> - 1.03e-1
+- Initial packaging using git pkg.
+
+* Wed Apr 24 2013 Marko Saukko <marko.saukko@jollamobile.com> - 1.03e
+- Initial packaging for Nemo.
