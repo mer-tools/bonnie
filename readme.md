@@ -1,6 +1,5 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML>
-<HEAD><TITLE>Bonnie++ Documentation</TITLE></HEAD>
+# Bonnie++ Documentatio
+
 <BODY>
 
 <UL><LI><B>Introduction</B><BR>
